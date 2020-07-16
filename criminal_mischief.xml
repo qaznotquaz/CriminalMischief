@@ -255,7 +255,7 @@
   
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 
-  <target name="generate exe and zip" description="">
+  <target name="generate exe and zip" description="Use launch4j to generate a .exe from the jar file, then zips it.">
     <property name="launch4j.dir" location="C:/Program Files (x86)/Launch4j" />
     <taskdef name="launch4j"
              classname="net.sf.launch4j.ant.Launch4jTask"

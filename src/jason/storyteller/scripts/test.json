@@ -1,0 +1,118 @@
+{
+  "header": {
+    "episode": 0,
+    "act": 0
+  },
+  "scenes": {
+    "0": {
+      "actors": {
+        "Lexa": {
+          "side": "Left",
+          "color": "CYAN"
+        },
+        "Xander": {
+          "side": "Right",
+          "color": "BRIGHT_RED"
+        }
+      },
+      "1": {
+        "delay": 0,
+        "type": "header",
+        "text": "Conversation recovered from [BG_WHITE][BLUE]HRMNY[RESET] archives.\nOriginal conversation began:\n3/14/REDACTED, 22:05:58"
+      },
+      "2": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "My name is [[RED]REDACTED[RESET]].",
+        "otherHighlights": "[RED][RESET]"
+      },
+      "3": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "You killed my father."
+      },
+      "4": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Prepare to die."
+      },
+      "5": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Xander",
+        "text": "dude lex"
+      },
+      "6": {
+        "delay": 500,
+        "type": "dm",
+        "from": "Xander",
+        "text": "have you [BOLD]no chill?[RESET]",
+        "otherHighlights": "[BOLD][RESET]"
+      },
+      "7": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "What? It's a good movie!"
+      },
+      "8": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Xander",
+        "text": "what movie"
+      },
+      "9": {
+        "delay": 1500,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Wait, you haven't-"
+      },
+      "10": {
+        "delay": 3000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "..."
+      },
+      "11": {
+        "delay": 3000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "You haven't seen the Princess Bride?"
+      },
+      "12": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Xander",
+        "text": "whats a princess"
+      },
+      "13": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "[INVERT]Please be lying.",
+        "otherHighlights": "[INVERT]"
+      },
+      "14": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Xander",
+        "text": "would i lie to u? rly?"
+      },
+      "15": {
+        "delay": 1000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Stoooooop talking."
+      },
+      "16": {
+        "delay": 400,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Just. Stop."
+      }
+    }
+  }
+}

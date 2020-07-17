@@ -43,7 +43,6 @@ public class ANSI {
     public static final String BRIGHT_BG_CYAN   = "\u001B[106m";
     public static final String BRIGHT_BG_WHITE  = "\u001B[107m";
 
-    public static final String BOLD      = "\u001B[1m";
     public static final String UNDERLINE = "\u001B[4m";
     public static final String INVERT    = "\u001B[7m";
 
@@ -79,8 +78,8 @@ public class ANSI {
         return String.format("\u001B[%sG", n);
     }
 
-    public static String CUP(int n, int m){
-        return String.format("\u001B[%s;%sH", n, m);
+    public static String CUP(int row, int col){
+        return String.format("\u001B[%s;%sH", row, col);
     }
 
     public static String ED(int n){

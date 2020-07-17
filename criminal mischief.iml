@@ -20,5 +20,16 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="json-java" level="project" />
+    <orderEntry type="module-library">
+      <library name="org.apache.directory.studio:org.apache.commons.lang:2.6" type="repository">
+        <properties maven-id="org.apache.directory.studio:org.apache.commons.lang:2.6" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/org.apache.commons.lang-2.6.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -17,101 +17,116 @@
       },
       "1": {
         "delay": 0,
-        "type": "header",
-        "text": "Conversation recovered from [BG_WHITE][BLUE]HRMNY[RESET] archives.\nOriginal conversation began:\n3/14/REDACTED, 22:05:58"
+        "type": "diagnostic",
+        "text": "Conversation recovered from [BG_WHITE][BLUE]HRMNY[RESET] archives."
       },
       "2": {
-        "delay": 1000,
-        "type": "dm",
-        "from": "Lexa",
-        "text": "My name is [[RED]REDACTED[RESET]].",
-        "otherHighlights": "[RED][RESET]"
+        "delay": 0,
+        "type": "diagnostic",
+        "text": "Original conversation began:"
       },
       "3": {
+        "delay": 0,
+        "type": "diagnostic",
+        "text": "3/14/REDACTED, 22:05:58"
+      },
+      "4": {
+        "delay": 3000,
+        "type": "dm",
+        "from": "Lexa",
+        "text": "My name is [[RESET]REDACTED[RED]].",
+        "otherHighlights": "[RED][RESET]"
+      },
+      "5": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "You killed my father."
       },
-      "4": {
+      "6": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "Prepare to die."
       },
-      "5": {
+      "7": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "dude lex"
       },
-      "6": {
+      "8": {
         "delay": 500,
         "type": "dm",
         "from": "Xander",
-        "text": "have you [BOLD]no chill?[RESET]",
-        "otherHighlights": "[BOLD][RESET]"
+        "text": "have you [UNDERLINE]no chill?[RESET]",
+        "otherHighlights": "[UNDERLINE][RESET]"
       },
-      "7": {
+      "9": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "What? It's a good movie!"
       },
-      "8": {
+      "10": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "what movie"
       },
-      "9": {
+      "11": {
         "delay": 1500,
         "type": "dm",
         "from": "Lexa",
         "text": "Wait, you haven't-"
       },
-      "10": {
+      "12": {
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
         "text": "..."
       },
-      "11": {
+      "13": {
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
         "text": "You haven't seen the Princess Bride?"
       },
-      "12": {
+      "14": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "whats a princess"
       },
-      "13": {
+      "15": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
-        "text": "[INVERT]Please be lying.",
-        "otherHighlights": "[INVERT]"
+        "text": "[RESET]Please be lying.[INVERT]",
+        "otherHighlights": "[INVERT][RESET]"
       },
-      "14": {
+      "16": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "would i lie to u? rly?"
       },
-      "15": {
+      "17": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "Stoooooop talking."
       },
-      "16": {
+      "18": {
         "delay": 400,
         "type": "dm",
         "from": "Lexa",
         "text": "Just. Stop."
+      },
+      "19": {
+        "delay": 3000,
+        "type": "diagnostic",
+        "text": "End of archived conversation."
       }
     }
   }

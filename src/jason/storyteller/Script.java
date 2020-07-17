@@ -64,14 +64,14 @@ public class Script implements Iterable<JSONObject>{
          */
         private String color;
         /**
-         * The side of the screen the actor's messages show up on. {@code false} is left, {@code true} is right
+         * The side of the screen the actor's messages show up on. {@code false} is left, {@code true} is right.
          */
-        private boolean side;
+        private boolean backwards;
 
         public MiniActor(String name, JSONObject json){
             this.name = name;
             color = ANSI.dynamicColor.get(json.getString("color"));
-            side = json.getString("side").equals("Left");
+            backwards = json.getString("side").equals("Left");
         }
 
         public String getName() {
@@ -90,12 +90,12 @@ public class Script implements Iterable<JSONObject>{
             this.color = color;
         }
 
-        public boolean isSide() {
-            return side;
+        public boolean isBackwards() {
+            return backwards;
         }
 
-        public void setSide(boolean side) {
-            this.side = side;
+        public void setBackwards(boolean backwards) {
+            this.backwards = backwards;
         }
     }
 

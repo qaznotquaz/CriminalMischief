@@ -1,6 +1,7 @@
 package jason.storyteller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,13 +14,14 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
 import static jason.storyteller.ANSI.*;
+import static jason.storyteller.Animations.animate;
 import static jason.storyteller.Animations.wipeBox;
 import static jason.storyteller.Script.getSceneLength;
 
 public class Main {
     static int[] consoleSize;
     static int currentConsoleLine = 1;
-    static int[] chatDefaultSpeeds = new int[]{10, 200, 30};
+    static int[] chatDefaultSpeeds = new int[]{20, 200, 30};
 
     public static void main(String[] args) throws InterruptedException, IOException {
         Map<String, String> myColors = new HashMap<>();
@@ -52,10 +54,11 @@ public class Main {
                         line);
                 break;
             case diagnostic:
-                writeGradually(otherHighlight(line.getString("text"), RESET), new int[]{30, 30, 30}, false);
+                writeGradually(otherHighlight(line.getString("text"), RESET), new int[]{10, 0, 0}, false);
                 break;
             case animation:
-                wipeBox(1, 1, currentConsoleLine, 62, 7);
+                animate(line.getString("animation"), line.getJSONObject("settings"));
+                break;
         }
     }
 
@@ -84,6 +87,20 @@ public class Main {
     public static void displayDm(Script.MiniActor actor, JSONObject line) throws InterruptedException {
         String text = line.getString("text");
         String toPrint;
+        int[] speeds = Arrays.copyOf(chatDefaultSpeeds, 3);
+        JSONObject jsonSpeeds = line.optJSONObject("speeds");
+
+        if(jsonSpeeds != null){
+            if(jsonSpeeds.has("name")){
+                speeds[0] = jsonSpeeds.getInt("name");
+            }
+            if(jsonSpeeds.has("tick")){
+                speeds[1] = jsonSpeeds.getInt("tick");
+            }
+            if(jsonSpeeds.has("text")){
+                speeds[2] = jsonSpeeds.getInt("text");
+            }
+        }
 
         /*if (formatWidth + othersLen + 18 > 61) {
             throw new ScriptFormattingException(String.format("line \"%s\" is too long.", text));
@@ -94,6 +111,8 @@ public class Main {
                     actor.getColor(), StringUtils.reverse(actor.getName()), RESET,
                     actor.getColor(), StringUtils.reverse(text), RESET);
             toPrint = otherHighlightBackwards(toPrint, actor.getColor());
+
+            toPrint = processBackwardLinebreaks(toPrint);
         } else {
             toPrint = String.format(" %s%s%s > %s%s%s",
                     actor.getColor(), actor.getName(), RESET,
@@ -101,22 +120,45 @@ public class Main {
             toPrint = otherHighlight(toPrint, actor.getColor());
         }
 
-        writeGradually(toPrint, chatDefaultSpeeds, actor.isBackwards());
+        writeGradually(toPrint, speeds, actor.isBackwards());
     }
 
     @SuppressWarnings("BusyWait")
     public static void writeGradually(String line, int[] speeds, boolean backwards) throws InterruptedException {
         boolean escaped = false;
         int speed = speeds[0];
+        int linebreakCol = -1;
 
-        if(backwards){
-            System.out.print(CUP(currentConsoleLine, consoleSize[0]));
-        } else {
-            System.out.print(CUP(currentConsoleLine, 1));
-        }
+        int col = backwards ? consoleSize[0] : 1;
+        System.out.print(CUP(currentConsoleLine, col));
 
         for (int i = 0; i < line.length(); i++) {
+            if (col == consoleSize[0] && !backwards){
+                while(line.charAt(i) != ' '){
+                    i--;
+                    col--;
+                    System.out.printf(" %s", CUP(currentConsoleLine, col));
+                }
+                i++;
+                col = linebreakCol;
+                currentConsoleLine++;
+                System.out.print(CUP(currentConsoleLine, col));
+            }
+
             char c = line.charAt(i);
+
+            if (c=='\n' && backwards){
+                /*while(line.charAt(i) != ' '){
+                    i--;
+                    col--;
+                    System.out.printf(" %s", CUP(currentConsoleLine, col));
+                }*/
+                col = linebreakCol;
+                currentConsoleLine++;
+                System.out.print(CUP(currentConsoleLine, col));
+                c = ' ';
+            }
+
             System.out.print(c);
 
             if (c == '\u001B') {
@@ -127,9 +169,20 @@ public class Main {
                 Thread.sleep(speed);
             }
 
-            if (c == '>' || c == '<'){
+            if(!escaped && !backwards){
+                col++;
+            } else if (!escaped){
+                col--;
+            }
+
+            if (c == '>'){
                 Thread.sleep(speeds[1]);
                 speed = speeds[2];
+                linebreakCol = col + 1;
+            } else if (c == '<'){
+                Thread.sleep(speeds[1]);
+                speed = speeds[2];
+                linebreakCol = col - 1;
             }
 
             if(backwards && !escaped){
@@ -144,15 +197,40 @@ public class Main {
         currentConsoleLine++;
     }
 
-    //todo: label
-    //todo: clean up animation formatting
-    public static void animate(String[] frames, int speed, int length) throws InterruptedException {
-        for (int i = 0; i < length; i++) {
-            System.out.print(frames[i % frames.length]);
-            Thread.sleep(speed);
-            System.out.print(new String(new char[frames[i % frames.length].length()]).replace("\0", "\b"));
-            //cls();
+    public static String processBackwardLinebreaks(String text){
+        StringBuilder line = new StringBuilder(text).reverse();
+        boolean escaped = false;
+        int col = 56;
+        int lastSpace = -1;
+        int linebreakCol = col;
+
+        for (int i = 0; i < line.length(); i++) {
+            if (col == 1){
+                i = lastSpace;
+                col = linebreakCol;
+                line.setCharAt(i, '\n');
+            }
+
+            char c = line.charAt(i);
+
+            /*if (c == '\u001B') {
+                escaped = true;
+            }*/
+
+            if (Character.isSpaceChar(c)){
+                lastSpace = i;
+            }
+
+            if(!escaped){
+                col--;
+            }
+
+            /*if (c == 'm'){
+                escaped = false;
+            }*/
         }
+
+        return line.reverse().toString();
     }
 
     public static void cmd(String command) throws IOException, InterruptedException {

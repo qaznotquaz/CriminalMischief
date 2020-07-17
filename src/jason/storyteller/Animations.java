@@ -1,6 +1,23 @@
 package jason.storyteller;
 
+import org.json.JSONObject;
+
 public class Animations {
+    public static void animate(String name, JSONObject settings) throws InterruptedException {
+        switch (name){
+            case "wipeBox":
+                wipeBox(settings.getInt("0"),
+                        settings.getInt("1"),
+                        settings.getInt("2"),
+                        settings.getInt("3"),
+                        settings.getInt("4"));
+                break;
+            case "streak":
+                streak();
+                break;
+        }
+    }
+
     public static void streak() throws InterruptedException {
         System.out.printf("%s%s", ANSI.CUP(1, 4), ANSI.BRIGHT_BG_RED);
         for (int i = 1; i < 50; i++) {
@@ -10,14 +27,14 @@ public class Animations {
     }
 
     public static void wipeBox(int rowTop, int colLeft, int rowBot, int colRight, int speed) throws InterruptedException {
-        System.out.printf("%s", ANSI.RESET);
-        for (int row = rowTop; row < rowBot; row++) {
-            for (int col = colLeft; col <= colRight; col++) {
+        System.out.printf("%s", ANSI.BG_WHITE);
+        for (int col = colLeft; col <= colRight; col++) {
+            for (int row = rowTop; row <= rowBot; row++) {
                 System.out.printf(" %s", ANSI.CUP(row, col));
                 Thread.sleep(speed);
             }
-            row++;
-            for (int col = colRight; col >= colLeft; col--) {
+            col++;
+            for (int row = rowBot; row >= rowTop; row--) {
                 System.out.printf(" %s", ANSI.CUP(row, col));
                 Thread.sleep(speed);
             }

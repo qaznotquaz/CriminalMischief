@@ -16,7 +16,7 @@
           "color": "BRIGHT_RED"
         }
       },
-        "length": 20
+        "length": 25
       },
       "1": {
         "delay": 0,
@@ -37,7 +37,7 @@
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
-        "text": "My name is [[RESET]REDACTED[RED]]."
+        "text": "My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die."
       },
       "5": {
         "delay": 1000,
@@ -84,6 +84,10 @@
       },
       "12": {
         "delay": 3000,
+        "speeds": {
+          "tick": 500,
+          "text": 250
+        },
         "type": "dm",
         "from": "Lexa",
         "text": "..."
@@ -102,6 +106,10 @@
       },
       "15": {
         "delay": 1000,
+        "speeds": {
+          "tick": 600,
+          "name": 100
+        },
         "type": "dm",
         "from": "Lexa",
         "text": "[RESET]Please be lying.[INVERT]",
@@ -126,14 +134,27 @@
         "text": "Just. Stop."
       },
       "19": {
+        "delay": 400,
+        "type": "dm",
+        "from": "Xander",
+        "text": "no i dont think i  will! im going to ramble until this line runs off the edge of the window. ramble ramble ramble ramble ramble ramble ramble ramble ramble ramble raaaamble ramble ramble"
+      },
+      "20": {
         "delay": 3000,
         "type": "diagnostic",
         "text": "End of archived conversation."
       },
-      "20": {
-        "delay": 1000,
+      "21": {
+        "delay": 10000,
         "type": "animation",
-        "animation": "streak"
+        "animation": "wipeBox",
+        "settings": {
+          "0": 1,
+          "1": 1,
+          "2": 25,
+          "3": 62,
+          "4": 2
+        }
       }
     }
   }

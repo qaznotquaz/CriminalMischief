@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Script implements Iterable<JSONObject>{
-    private JSONObject sceneScript;
-    private final String scene = "0";
+    private static JSONObject sceneScript;
+    private static final String scene = "0";
     private static final ArrayList<MiniActor> cast = new ArrayList<>();
 
     public Script(String scriptName) {
@@ -27,8 +27,12 @@ public class Script implements Iterable<JSONObject>{
         }*/
 
         sceneScript = json.getJSONObject("scenes").getJSONObject(scene);
-        JSONObject actors = sceneScript.getJSONObject("actors");
+        JSONObject actors = sceneScript.getJSONObject("header").getJSONObject("actors");
         actors.keySet().forEach(a -> cast.add(new MiniActor(a, actors.getJSONObject(a))));
+    }
+
+    public static int getSceneLength(){
+        return sceneScript.getJSONObject("header").getInt("length");
     }
 
     /**
@@ -51,7 +55,7 @@ public class Script implements Iterable<JSONObject>{
     }
 
     public enum LineType{
-        dm, header, diagnostic
+        dm, diagnostic, animation
     }
 
     class MiniActor{

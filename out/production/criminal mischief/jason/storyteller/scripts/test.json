@@ -5,7 +5,8 @@
   },
   "scenes": {
     "0": {
-      "actors": {
+      "header": {
+        "actors": {
         "Lexa": {
           "side": "Left",
           "color": "CYAN"
@@ -14,6 +15,8 @@
           "side": "Right",
           "color": "BRIGHT_RED"
         }
+      },
+        "length": 20
       },
       "1": {
         "delay": 0,
@@ -34,8 +37,7 @@
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
-        "text": "My name is [[RESET]REDACTED[RED]].",
-        "otherHighlights": "[RED][RESET]"
+        "text": "My name is [[RESET]REDACTED[RED]]."
       },
       "5": {
         "delay": 1000,
@@ -127,6 +129,11 @@
         "delay": 3000,
         "type": "diagnostic",
         "text": "End of archived conversation."
+      },
+      "20": {
+        "delay": 1000,
+        "type": "animation",
+        "animation": "streak"
       }
     }
   }

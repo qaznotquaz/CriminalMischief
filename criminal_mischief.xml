@@ -255,13 +255,15 @@
   
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 
-  <target name="generate exe and zip" description="Use launch4j to generate a .exe from the jar file, then zips it.">
+  <target name="generate exe">
     <property name="launch4j.dir" location="C:/Program Files (x86)/Launch4j" />
     <taskdef name="launch4j"
              classname="net.sf.launch4j.ant.Launch4jTask"
              classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream-1.4.8.jar" />
     <launch4j configFile="C:/Users/JasonEaton/IdeaProjects/criminal mischief/.idea/criminalmischiefLaunch4jConfig.xml"/>
+  </target>
 
+  <target name="generate zip" depends="generate exe">
     <zip destfile="C:/Users/JasonEaton/IdeaProjects/criminal mischief/out/artifacts/zip/criminalmischief.zip" basedir="C:/Users/JasonEaton/IdeaProjects/criminal mischief/out/artifacts/zip/toZip" update="true"/>
   </target>
 </project>

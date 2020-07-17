@@ -13,16 +13,15 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
 import static jason.storyteller.ANSI.*;
+import static jason.storyteller.Animations.wipeBox;
+import static jason.storyteller.Script.getSceneLength;
 
 public class Main {
-    static int formatWidth = 62;
-    //todo: clean up this animation formatting
-    static String[][] dotdotdot = {{"\u001B[42m \n ", " \n "}, {".\n ", " \n "}, {".\n.", " \n "}, {".\n.", "\u001B[104m \n."}, {".\n.", ".\n."}, {" \n.", ".\n."}, {" \n ", ".\n."}, {" \n ", ".\n \u001B[0m"}};
+    static int[] consoleSize;
     static int currentConsoleLine = 1;
+    static int[] chatDefaultSpeeds = new int[]{10, 200, 30};
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        setupConsole();
-
         Map<String, String> myColors = new HashMap<>();
         myColors.put("BRIGHT_RED", BRIGHT_RED);
         myColors.put("CYAN", CYAN);
@@ -34,26 +33,29 @@ public class Main {
         ANSI.setDynamicColor(myColors);
 
         Script script = new Script("test.json");
+        consoleSize = new int[]{62, getSceneLength()};
+
+        setupConsole();
 
         for (JSONObject line : script) {
             actLine(line);
         }
-
-        Thread.sleep(10000);
     }
 
     public static void actLine(JSONObject line) throws InterruptedException {
         Script.LineType type = line.getEnum(Script.LineType.class, "type");
+        Thread.sleep(line.getInt("delay"));
 
         switch (type) {
             case dm:
                 displayDm(Objects.requireNonNull(Script.getActor(line.getString("from"))),
                         line);
-                Thread.sleep(line.getInt("delay"));
                 break;
             case diagnostic:
                 writeGradually(otherHighlight(line.getString("text"), RESET), new int[]{30, 30, 30}, false);
-
+                break;
+            case animation:
+                wipeBox(1, 1, currentConsoleLine, 62, 7);
         }
     }
 
@@ -81,32 +83,25 @@ public class Main {
     //todo: label
     public static void displayDm(Script.MiniActor actor, JSONObject line) throws InterruptedException {
         String text = line.getString("text");
-        int othersLen = 0;
+        String toPrint;
 
         /*if (formatWidth + othersLen + 18 > 61) {
             throw new ScriptFormattingException(String.format("line \"%s\" is too long.", text));
         }*/
 
         if (actor.isBackwards()) {
-            /*String toPrint = String.format("%s%s%s < %s%s%s ",
-                    actor.getColor(), text, RESET,
-                    actor.getColor(), actor.getName(), RESET);*/
-            String toPrint = String.format(" %s%s%s > %s%s%s",
+            toPrint = String.format(" %s%s%s < %s%s%s",
                     actor.getColor(), StringUtils.reverse(actor.getName()), RESET,
                     actor.getColor(), StringUtils.reverse(text), RESET);
             toPrint = otherHighlightBackwards(toPrint, actor.getColor());
-            //StringBuilder finalLine = new StringBuilder(String.format("%" + (formatWidth + 18 + othersLen) + "s\n", toPrint));
-            //finalLine.reverse();
-
-            writeGradually(toPrint, new int[]{10, 200, 30}, true);
         } else {
-            String toPrint = String.format(" %s%s%s > %s%s%s",
+            toPrint = String.format(" %s%s%s > %s%s%s",
                     actor.getColor(), actor.getName(), RESET,
                     actor.getColor(), text, RESET);
             toPrint = otherHighlight(toPrint, actor.getColor());
-
-            writeGradually(toPrint, new int[]{10, 200, 30}, false);
         }
+
+        writeGradually(toPrint, chatDefaultSpeeds, actor.isBackwards());
     }
 
     @SuppressWarnings("BusyWait")
@@ -115,7 +110,7 @@ public class Main {
         int speed = speeds[0];
 
         if(backwards){
-            System.out.print(CUP(currentConsoleLine, formatWidth));
+            System.out.print(CUP(currentConsoleLine, consoleSize[0]));
         } else {
             System.out.print(CUP(currentConsoleLine, 1));
         }
@@ -132,7 +127,7 @@ public class Main {
                 Thread.sleep(speed);
             }
 
-            if (c == '>'){
+            if (c == '>' || c == '<'){
                 Thread.sleep(speeds[1]);
                 speed = speeds[2];
             }
@@ -158,24 +153,6 @@ public class Main {
             System.out.print(new String(new char[frames[i % frames.length].length()]).replace("\0", "\b"));
             //cls();
         }
-    }
-
-    //todo: label
-    //todo: clean up animation formatting
-    public static void complexAnimate(String[][] frames, int horOrig, int verOrig, int width, int height, int speed, int length) throws InterruptedException {
-        System.out.print(code("s"));
-        String[] frame;
-        for (int i = 0; i < length; i++) {
-            for (int j = verOrig; j < verOrig + height; j++) {
-                frame = frames[i % frames.length][j - verOrig].split("\n");
-                for (int k = horOrig; k < horOrig + width; k++) {
-                    System.out.print(CUP(j, k));
-                    System.out.print(frame[k - horOrig]);
-                }
-            }
-            Thread.sleep(speed);
-        }
-        System.out.print(code("u"));
     }
 
     public static void cmd(String command) throws IOException, InterruptedException {
@@ -207,6 +184,6 @@ public class Main {
             SetConsoleModeFunc.invoke(BOOL.class, new Object[]{hOut, dwMode});
         }
 
-        cmd(String.format("mode con: cols=%s", formatWidth));
+        cmd(String.format("mode con: cols=%s lines=%s", consoleSize[0], consoleSize[1]));
     }
 }

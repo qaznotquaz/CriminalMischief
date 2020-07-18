@@ -125,38 +125,104 @@ public class Main {
 
     @SuppressWarnings("BusyWait")
     public static void writeGradually(String line, int[] speeds, boolean backwards) throws InterruptedException {
+        if(backwards){
+            writeGraduallyBackwards(line, speeds);
+        } else {
+            boolean escaped = false;
+            int speed = speeds[0];
+            int linebreakCol = -1;
+            int col = 1;
+
+            System.out.print(CUP(currentConsoleLine, col));
+
+            for (int i = 0; i < line.length(); i++) {
+                if (col == consoleSize[0]) {
+                    while (line.charAt(i) != ' ') {
+                        i--;
+                        col--;
+                        System.out.printf(" %s", CUP(currentConsoleLine, col));
+                    }
+                    i++;
+                    col = linebreakCol;
+                    currentConsoleLine++;
+                    System.out.print(CUP(currentConsoleLine, col));
+                }
+
+                char c = line.charAt(i);
+
+                System.out.print(c);
+
+                if (c == '\u001B') {
+                    escaped = true;
+                }
+
+                if (!escaped && !Character.isSpaceChar(c)) {
+                    Thread.sleep(speed);
+                }
+
+                if (!escaped) {
+                    col++;
+                }
+
+                if (c == '>') {
+                    Thread.sleep(speeds[1]);
+                    speed = speeds[2];
+                    linebreakCol = col + 1;
+                }
+
+                if (c == 'm') {
+                    escaped = false;
+                }
+            }
+
+            currentConsoleLine++;
+        }
+    }
+
+    @SuppressWarnings("BusyWait")
+    public static void writeGraduallyBackwards(String line, int[] speeds) throws InterruptedException {
         boolean escaped = false;
+        int arrow = 0;
+        int totalNewlines = 0;
+        int currentNewline = 0;
+        int printingLine = currentConsoleLine;
+        int origLine = printingLine;
         int speed = speeds[0];
         int linebreakCol = -1;
 
-        int col = backwards ? consoleSize[0] : 1;
-        System.out.print(CUP(currentConsoleLine, col));
+        int col = consoleSize[0];
+        System.out.print(CUP(printingLine, col));
 
         for (int i = 0; i < line.length(); i++) {
-            if (col == consoleSize[0] && !backwards){
-                while(line.charAt(i) != ' '){
-                    i--;
-                    col--;
-                    System.out.printf(" %s", CUP(currentConsoleLine, col));
-                }
-                i++;
-                col = linebreakCol;
-                currentConsoleLine++;
-                System.out.print(CUP(currentConsoleLine, col));
-            }
-
             char c = line.charAt(i);
 
-            if (c=='\n' && backwards){
-                /*while(line.charAt(i) != ' '){
-                    i--;
-                    col--;
-                    System.out.printf(" %s", CUP(currentConsoleLine, col));
-                }*/
+            if (c=='\n'){
+
+                if(currentNewline == totalNewlines){
+                    while(col != linebreakCol){
+                        col++;
+                        System.out.printf(" %s", CUP(printingLine, col));
+                    }
+                    totalNewlines++;
+                    currentConsoleLine++;
+                    printingLine = printingLine+totalNewlines;
+                    currentNewline = 0;
+                    i = arrow;
+                } else {
+                    printingLine--;
+                    currentNewline++;
+                }
+
+                if(printingLine == origLine){
+                    speed = speeds[2];
+                } else {
+                    speed = 0;
+                }
+
                 col = linebreakCol;
-                currentConsoleLine++;
-                System.out.print(CUP(currentConsoleLine, col));
                 c = ' ';
+
+                System.out.print(CUP(printingLine, col));
             }
 
             System.out.print(c);
@@ -169,23 +235,18 @@ public class Main {
                 Thread.sleep(speed);
             }
 
-            if(!escaped && !backwards){
-                col++;
-            } else if (!escaped){
+            if(!escaped){
                 col--;
             }
 
-            if (c == '>'){
-                Thread.sleep(speeds[1]);
-                speed = speeds[2];
-                linebreakCol = col + 1;
-            } else if (c == '<'){
+            if (c == '<'){
                 Thread.sleep(speeds[1]);
                 speed = speeds[2];
                 linebreakCol = col - 1;
+                arrow = i+1;
             }
 
-            if(backwards && !escaped){
+            if(!escaped){
                 System.out.print(CUB(2));
             }
 

@@ -37,52 +37,40 @@
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
-        "text": "My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die. My name is Inigo Montoya. You killed my father. Prepare to die."
+        "text": "My name is Inigo Montoya. You killed my father."
       },
       "5": {
-        "delay": 1000,
-        "type": "dm",
-        "from": "Lexa",
-        "text": "You killed my father."
-      },
-      "6": {
-        "delay": 1000,
-        "type": "dm",
-        "from": "Lexa",
-        "text": "Prepare to die."
-      },
-      "7": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "dude lex"
       },
-      "8": {
+      "6": {
         "delay": 500,
         "type": "dm",
         "from": "Xander",
         "text": "have you [UNDERLINE]no chill?[RESET]",
         "otherHighlights": "[UNDERLINE][RESET]"
       },
-      "9": {
+      "7": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "What? It's a good movie!"
       },
-      "10": {
+      "8": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "what movie"
       },
-      "11": {
+      "9": {
         "delay": 1500,
         "type": "dm",
         "from": "Lexa",
         "text": "Wait, you haven't-"
       },
-      "12": {
+      "10": {
         "delay": 3000,
         "speeds": {
           "tick": 500,
@@ -92,19 +80,19 @@
         "from": "Lexa",
         "text": "..."
       },
-      "13": {
+      "11": {
         "delay": 3000,
         "type": "dm",
         "from": "Lexa",
         "text": "You haven't seen the Princess Bride?"
       },
-      "14": {
+      "12": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "whats a princess"
       },
-      "15": {
+      "13": {
         "delay": 1000,
         "speeds": {
           "tick": 600,
@@ -115,36 +103,48 @@
         "text": "[RESET]Please be lying.[INVERT]",
         "otherHighlights": "[INVERT][RESET]"
       },
-      "16": {
+      "14": {
         "delay": 1000,
         "type": "dm",
         "from": "Xander",
         "text": "would i lie to u? rly?"
       },
-      "17": {
+      "15": {
         "delay": 1000,
         "type": "dm",
         "from": "Lexa",
         "text": "Stoooooop talking."
       },
-      "18": {
+      "16": {
         "delay": 400,
         "type": "dm",
         "from": "Lexa",
         "text": "Just. Stop."
       },
-      "19": {
+      "17": {
         "delay": 400,
+        "speeds": {
+          "text": 4
+        },
         "type": "dm",
         "from": "Xander",
         "text": "no i dont think i  will! im going to ramble until this line runs off the edge of the window. ramble ramble ramble ramble ramble ramble ramble ramble ramble ramble raaaamble ramble ramble"
       },
-      "20": {
+      "18": {
+        "delay": 400,
+        "speeds": {
+          "text": 4
+        },
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Dude just shut up! Shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up shut up!!!!"
+      },
+      "19": {
         "delay": 3000,
         "type": "diagnostic",
         "text": "End of archived conversation."
       },
-      "21": {
+      "20": {
         "delay": 10000,
         "type": "animation",
         "animation": "wipeBox",

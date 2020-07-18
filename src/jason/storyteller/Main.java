@@ -107,12 +107,13 @@ public class Main {
         }*/
 
         if (actor.isBackwards()) {
-            toPrint = String.format(" %s%s%s < %s%s%s",
-                    actor.getColor(), StringUtils.reverse(actor.getName()), RESET,
+            String namePrint = String.format(" %s%s%s < ",
+                    actor.getColor(), StringUtils.reverse(actor.getName()), RESET);
+            toPrint = String.format("%s%s%s ",
                     actor.getColor(), StringUtils.reverse(text), RESET);
             toPrint = otherHighlightBackwards(toPrint, actor.getColor());
 
-            toPrint = processBackwardLinebreaks(toPrint);
+            toPrint = String.format("%s%s", namePrint, processBackwardLinebreaks(toPrint));
         } else {
             toPrint = String.format(" %s%s%s > %s%s%s",
                     actor.getColor(), actor.getName(), RESET,
@@ -197,11 +198,10 @@ public class Main {
             char c = line.charAt(i);
 
             if (c=='\n'){
-
                 if(currentNewline == totalNewlines){
                     while(col != linebreakCol){
-                        col++;
                         System.out.printf(" %s", CUP(printingLine, col));
+                        col++;
                     }
                     totalNewlines++;
                     currentConsoleLine++;
@@ -260,7 +260,8 @@ public class Main {
 
     public static String processBackwardLinebreaks(String text){
         StringBuilder line = new StringBuilder(text).reverse();
-        boolean escaped = false;
+        boolean possiblyEscaped = false;
+        int charsEscaped = 0;
         int col = 56;
         int lastSpace = -1;
         int linebreakCol = col;
@@ -274,21 +275,26 @@ public class Main {
 
             char c = line.charAt(i);
 
-            /*if (c == '\u001B') {
-                escaped = true;
-            }*/
+            if (c == 'm') {
+                possiblyEscaped = true;
+                charsEscaped = 0;
+            }
 
             if (Character.isSpaceChar(c)){
                 lastSpace = i;
             }
 
-            if(!escaped){
-                col--;
+            col--;
+
+            if(possiblyEscaped){
+                charsEscaped++;
             }
 
-            /*if (c == 'm'){
-                escaped = false;
-            }*/
+            if (c == '\u001B'){
+                possiblyEscaped = false;
+                col = col+charsEscaped;
+                charsEscaped = 0;
+            }
         }
 
         return line.reverse().toString();

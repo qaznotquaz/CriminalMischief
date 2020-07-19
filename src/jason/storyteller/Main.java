@@ -1,6 +1,7 @@
 package jason.storyteller;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,11 @@ import static jason.storyteller.Script.getSceneLength;
 public class Main {
     static int[] consoleSize;
     static int currentConsoleLine = 1;
-    static int[] chatDefaultSpeeds = new int[]{20, 200, 30};
+    static int[] chatDefaultSpeeds = new int[]{1000, 20, 1000, 30};
+    static int[] diagnosticDefaultSpeeds = new int[]{5, 10, 0, 0};
+    static int[] quickSpeeds = new int[]{50, 5, 10, 10};
+
+    static boolean quickMode = false;
 
     public static void main(String[] args) throws InterruptedException, IOException {
         Map<String, String> myColors = new HashMap<>();
@@ -33,6 +38,11 @@ public class Main {
         myColors.put("UNDERLINE", UNDERLINE);
         myColors.put("INVERT", INVERT);
         ANSI.setDynamicColor(myColors);
+
+        if(quickMode){
+            chatDefaultSpeeds = Arrays.copyOf(quickSpeeds, 4);
+            diagnosticDefaultSpeeds = Arrays.copyOf(quickSpeeds, 4);
+        }
 
         Script script = new Script("test.json");
         consoleSize = new int[]{62, getSceneLength()};
@@ -46,20 +56,48 @@ public class Main {
 
     public static void actLine(JSONObject line) throws InterruptedException {
         Script.LineType type = line.getEnum(Script.LineType.class, "type");
-        Thread.sleep(line.getInt("delay"));
+        int[] speeds;
+        JSONObject jsonSpeeds = line.optJSONObject("speeds");
 
         switch (type) {
             case dm:
+                speeds = adjustSpeeds(jsonSpeeds, chatDefaultSpeeds);
+                Thread.sleep(speeds[0]);
                 displayDm(Objects.requireNonNull(Script.getActor(line.getString("from"))),
-                        line);
+                        line, speeds);
                 break;
             case diagnostic:
-                writeGradually(otherHighlight(line.getString("text"), RESET), new int[]{10, 0, 0}, false);
+                speeds = adjustSpeeds(jsonSpeeds, diagnosticDefaultSpeeds);
+                Thread.sleep(speeds[0]);
+                writeGradually(otherHighlight(line.getString("text"), RESET), speeds, false);
                 break;
             case animation:
+                speeds = adjustSpeeds(jsonSpeeds, quickSpeeds);
+                Thread.sleep(speeds[0]);
                 animate(line.getString("animation"), line.getJSONObject("settings"));
                 break;
         }
+    }
+
+    public static int[] adjustSpeeds(JSONObject jsonSpeeds, int[] defaultSpeeds){
+        int[] speeds = Arrays.copyOf(defaultSpeeds, 4);
+
+        if(!quickMode && jsonSpeeds != null){
+            if(jsonSpeeds.has("pre")){
+                speeds[0] = jsonSpeeds.getInt("pre");
+            }
+            if(jsonSpeeds.has("name")){
+                speeds[1] = jsonSpeeds.getInt("name");
+            }
+            if(jsonSpeeds.has("tick")){
+                speeds[2] = jsonSpeeds.getInt("tick");
+            }
+            if(jsonSpeeds.has("text")){
+                speeds[3] = jsonSpeeds.getInt("text");
+            }
+        }
+
+        return speeds;
     }
 
     //todo: label
@@ -84,23 +122,10 @@ public class Main {
     }
 
     //todo: label
-    public static void displayDm(Script.MiniActor actor, JSONObject line) throws InterruptedException {
+    public static void displayDm(Script.MiniActor actor, JSONObject line, int[] speeds) throws InterruptedException {
         String text = line.getString("text");
         String toPrint;
-        int[] speeds = Arrays.copyOf(chatDefaultSpeeds, 3);
-        JSONObject jsonSpeeds = line.optJSONObject("speeds");
 
-        if(jsonSpeeds != null){
-            if(jsonSpeeds.has("name")){
-                speeds[0] = jsonSpeeds.getInt("name");
-            }
-            if(jsonSpeeds.has("tick")){
-                speeds[1] = jsonSpeeds.getInt("tick");
-            }
-            if(jsonSpeeds.has("text")){
-                speeds[2] = jsonSpeeds.getInt("text");
-            }
-        }
 
         /*if (formatWidth + othersLen + 18 > 61) {
             throw new ScriptFormattingException(String.format("line \"%s\" is too long.", text));
@@ -130,7 +155,7 @@ public class Main {
             writeGraduallyBackwards(line, speeds);
         } else {
             boolean escaped = false;
-            int speed = speeds[0];
+            int speed = speeds[1];
             int linebreakCol = -1;
             int col = 1;
 
@@ -166,8 +191,8 @@ public class Main {
                 }
 
                 if (c == '>') {
-                    Thread.sleep(speeds[1]);
-                    speed = speeds[2];
+                    Thread.sleep(speeds[2]);
+                    speed = speeds[3];
                     linebreakCol = col + 1;
                 }
 
@@ -188,7 +213,7 @@ public class Main {
         int currentNewline = 0;
         int printingLine = currentConsoleLine;
         int origLine = printingLine;
-        int speed = speeds[0];
+        int speed = speeds[1];
         int linebreakCol = -1;
 
         int col = consoleSize[0];
@@ -214,7 +239,7 @@ public class Main {
                 }
 
                 if(printingLine == origLine){
-                    speed = speeds[2];
+                    speed = speeds[3];
                 } else {
                     speed = 0;
                 }
@@ -240,8 +265,8 @@ public class Main {
             }
 
             if (c == '<'){
-                Thread.sleep(speeds[1]);
-                speed = speeds[2];
+                Thread.sleep(speeds[2]);
+                speed = speeds[3];
                 linebreakCol = col - 1;
                 arrow = i+1;
             }
@@ -254,6 +279,7 @@ public class Main {
                 escaped = false;
             }
         }
+        System.out.print(CUF(1));
 
         currentConsoleLine++;
     }

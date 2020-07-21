@@ -12,8 +12,14 @@ public class Script implements Iterable<JSONObject>{
     private static final String scene = "0";
     private static final ArrayList<MiniActor> cast = new ArrayList<>();
 
-    public Script(String scriptName) {
-        InputStream inputStream = getClass().getResourceAsStream(String.format("scripts/%s", scriptName));
+    public Script(int episode, int act, String scene) {
+        InputStream inputStream;
+
+        try {
+            inputStream = getClass().getResourceAsStream(String.format("scripts/%s.json", scene));
+        } catch (Exception e){
+            throw new IllegalArgumentException(String.format("Scene %s does not exist.", scene));
+        }
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -22,11 +28,11 @@ public class Script implements Iterable<JSONObject>{
         JSONObject json = new JSONObject(contentBuilder.toString());
 
         JSONObject header = json.getJSONObject("header");
-        /*if (header.getInt("episode") != episode || header.getInt("act") != act){
-            throw new IllegalStateException("Playscript at " + path + " has invalid header.");
-        }*/
+        if (header.getInt("episode") != episode || header.getInt("act") != act){
+            throw new IllegalArgumentException(String.format("Scene %s is not ep %s, act %s", scene, episode, act));
+        }
 
-        sceneScript = json.getJSONObject("scenes").getJSONObject(scene);
+        sceneScript = json.getJSONObject("scenes").getJSONObject(Script.scene);
         JSONObject actors = sceneScript.getJSONObject("header").getJSONObject("actors");
         actors.keySet().forEach(a -> cast.add(new MiniActor(a, actors.getJSONObject(a))));
     }

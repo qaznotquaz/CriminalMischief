@@ -1,0 +1,4 @@
+episode: 0
+act: 0
+scene: test
+quick mode: false

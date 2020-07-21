@@ -1,7 +1,8 @@
 {
   "header": {
     "episode": 0,
-    "act": 0
+    "act": 0,
+    "snippetTitle": "test"
   },
   "scenes": {
     "0": {

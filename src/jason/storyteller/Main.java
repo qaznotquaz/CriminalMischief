@@ -1,34 +1,41 @@
 package jason.storyteller;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.sun.jna.*;
-import com.sun.jna.platform.win32.WinDef.*;
+import com.sun.jna.Function;
+import com.sun.jna.platform.win32.WinDef.BOOL;
+import com.sun.jna.platform.win32.WinDef.DWORD;
+import com.sun.jna.platform.win32.WinDef.DWORDByReference;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static jason.storyteller.ANSI.*;
 import static jason.storyteller.Animations.animate;
-import static jason.storyteller.Animations.wipeBox;
 import static jason.storyteller.Script.getSceneLength;
 
-public class Main {
+public class Main { //todo: decide how to organize hidden files
+    static int ep; static int act; static String scene;
     static int[] consoleSize;
     static int currentConsoleLine = 1;
     static int[] chatDefaultSpeeds = new int[]{1000, 20, 1000, 30};
     static int[] diagnosticDefaultSpeeds = new int[]{5, 10, 0, 0};
     static int[] quickSpeeds = new int[]{50, 5, 10, 10};
 
+    static ArrayList<String[]> config = new ArrayList<>();
+    static Script script;
+
     static boolean quickMode = false;
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        File cfgFile = new File("config.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(cfgFile));
+        reader.lines().forEach(s -> config.add(s.split(": ")));
+
+        config.forEach(s -> cfgCheck(s[0], s[1]));
+
         Map<String, String> myColors = new HashMap<>();
         myColors.put("BRIGHT_RED", BRIGHT_RED);
         myColors.put("CYAN", CYAN);
@@ -44,13 +51,34 @@ public class Main {
             diagnosticDefaultSpeeds = Arrays.copyOf(quickSpeeds, 4);
         }
 
-        Script script = new Script("test.json");
+        try {
+            script = new Script(ep, act, scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         consoleSize = new int[]{62, getSceneLength()};
 
         setupConsole();
 
         for (JSONObject line : script) {
             actLine(line);
+        }
+    }
+
+    private static void cfgCheck(String option, String choice) {
+        switch (option) {
+            case "episode":
+                ep = Integer.parseInt(choice);
+                break;
+            case "act":
+                act = Integer.parseInt(choice);
+                break;
+            case "scene":
+                scene = choice;
+                break;
+            case "quickMode":
+                quickMode = Boolean.parseBoolean(choice);
+                break;
         }
     }
 

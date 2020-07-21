@@ -1,4 +1,3 @@
-episode: 0
-act: 0
-scene: test
+date: 3.14.-0
+tags: spiderman, princess bride
 quick mode: false

@@ -16,8 +16,8 @@ import static jason.storyteller.ANSI.*;
 import static jason.storyteller.Animations.animate;
 import static jason.storyteller.Script.getSceneLength;
 
-public class Main { //todo: decide how to organize hidden files
-    static int ep; static int act; static String scene;
+public class Main { //todo: implement triage handling and logical operators for tag system
+    static String date; static ArrayList<String> tags = new ArrayList<>();
     static int[] consoleSize;
     static int currentConsoleLine = 1;
     static int[] chatDefaultSpeeds = new int[]{1000, 20, 1000, 30};
@@ -52,7 +52,7 @@ public class Main { //todo: decide how to organize hidden files
         }
 
         try {
-            script = new Script(ep, act, scene);
+            script = new Script(date, tags);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,14 +67,11 @@ public class Main { //todo: decide how to organize hidden files
 
     private static void cfgCheck(String option, String choice) {
         switch (option) {
-            case "episode":
-                ep = Integer.parseInt(choice);
+            case "date":
+                date = choice;
                 break;
-            case "act":
-                act = Integer.parseInt(choice);
-                break;
-            case "scene":
-                scene = choice;
+            case "tags":
+                Collections.addAll(tags, choice.split(", "));
                 break;
             case "quickMode":
                 quickMode = Boolean.parseBoolean(choice);

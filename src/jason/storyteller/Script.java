@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -12,13 +13,15 @@ public class Script implements Iterable<JSONObject>{
     private static final String scene = "0";
     private static final ArrayList<MiniActor> cast = new ArrayList<>();
 
-    public Script(int episode, int act, String scene) {
+    public Script(String date, ArrayList<String> tags) {
         InputStream inputStream;
+        String[] sceneTags;
+        String sceneSelected = "none";
 
         try {
-            inputStream = getClass().getResourceAsStream(String.format("scripts/%s.json", scene));
+            inputStream = getClass().getResourceAsStream(String.format("snippets/%s.json", date));
         } catch (Exception e){
-            throw new IllegalArgumentException(String.format("Scene %s does not exist.", scene));
+            throw new IllegalArgumentException(String.format("Date %s does not exist.", date));
         }
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder contentBuilder = new StringBuilder();
@@ -27,14 +30,27 @@ public class Script implements Iterable<JSONObject>{
 
         JSONObject json = new JSONObject(contentBuilder.toString());
 
-        JSONObject header = json.getJSONObject("header");
+        /*JSONObject header = json.getJSONObject("header");
         if (header.getInt("episode") != episode || header.getInt("act") != act){
-            throw new IllegalArgumentException(String.format("Scene %s is not ep %s, act %s", scene, episode, act));
+            throw new IllegalArgumentException(String.format("Scene %s is not ep %s, act %s", date, episode, act));
+        }*/
+
+        JSONObject scenes = json.getJSONObject("scenes");
+
+        for (String key:scenes.keySet()) {
+             sceneTags = scenes.getJSONObject(key).optJSONObject("header").getString("tags").split(", ");
+
+             if(Arrays.stream(sceneTags).anyMatch(tags::contains)){
+                 sceneSelected = key;
+                 break;
+             }
         }
 
-        sceneScript = json.getJSONObject("scenes").getJSONObject(Script.scene);
-        JSONObject actors = sceneScript.getJSONObject("header").getJSONObject("actors");
-        actors.keySet().forEach(a -> cast.add(new MiniActor(a, actors.getJSONObject(a))));
+        sceneScript = scenes.getJSONObject(sceneSelected);
+        JSONObject actors = sceneScript.getJSONObject("header").optJSONObject("actors");
+        if(actors!=null){
+            actors.keySet().forEach(a -> cast.add(new MiniActor(a, actors.getJSONObject(a))));
+        }
     }
 
     public static int getSceneLength(){

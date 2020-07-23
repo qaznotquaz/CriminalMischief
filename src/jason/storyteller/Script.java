@@ -13,9 +13,9 @@ public class Script implements Iterable<JSONObject>{
     private static final String scene = "0";
     private static final ArrayList<MiniActor> cast = new ArrayList<>();
 
-    public Script(String date, ArrayList<String> tags) {
+    public Script(String date, boolean anyOfTags, ArrayList<String> searchTags, ArrayList<String> noneTags) {
         InputStream inputStream;
-        String[] sceneTags;
+        ArrayList<String> sceneTags;
         String sceneSelected = "none";
 
         try {
@@ -37,12 +37,11 @@ public class Script implements Iterable<JSONObject>{
 
         JSONObject scenes = json.getJSONObject("scenes");
 
-        for (String key:scenes.keySet()) {
-             sceneTags = scenes.getJSONObject(key).optJSONObject("header").getString("tags").split(", ");
+        for (String sceneKey:scenes.keySet()) {
+             sceneTags = new ArrayList<>(Arrays.asList(scenes.getJSONObject(sceneKey).optJSONObject("header").getString("tags").split(", ")));
 
-             if(Arrays.stream(sceneTags).anyMatch(tags::contains)){
-                 sceneSelected = key;
-                 break;
+             if(checkSceneTags(anyOfTags, searchTags, noneTags, sceneTags)){
+                 sceneSelected = sceneKey;
              }
         }
 
@@ -50,6 +49,20 @@ public class Script implements Iterable<JSONObject>{
         JSONObject actors = sceneScript.getJSONObject("header").optJSONObject("actors");
         if(actors!=null){
             actors.keySet().forEach(a -> cast.add(new MiniActor(a, actors.getJSONObject(a))));
+        }
+    }
+
+    public static boolean checkSceneTags(
+            boolean anyOfTags, ArrayList<String> searchTags, ArrayList<String> noneTags, ArrayList<String> sceneTags){
+
+        if(sceneTags.stream().anyMatch((noneTags::contains))){
+            return false;
+        }
+
+        if(anyOfTags){
+            return sceneTags.stream().anyMatch(searchTags::contains);
+        } else {
+            return sceneTags.containsAll(searchTags);
         }
     }
 

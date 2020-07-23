@@ -14,7 +14,7 @@
       },
       "2": {
         "type": "diagnostic",
-        "text": "No snippets found with that/those tag(s)."
+        "text": "No snippets match your search."
       },
       "3": {
         "speeds": {
@@ -164,6 +164,119 @@
           "0": 1,
           "1": 1,
           "2": 25,
+          "3": 62,
+          "4": 2
+        }
+      }
+    },
+    "1": {
+      "header": {
+        "actors": {
+          "Lexa": {
+            "side": "Right",
+            "color": "CYAN"
+          },
+          "Xander": {
+            "side": "Left",
+            "color": "BRIGHT_RED"
+          }
+        },
+        "length": 17,
+        "tags": "filler, bickering, existential"
+      },
+      "1": {
+        "type": "diagnostic",
+        "text": "Conversation recovered from [BG_WHITE][BLUE]HRMNY[RESET] archives."
+      },
+      "2": {
+        "type": "diagnostic",
+        "text": "Original conversation began:"
+      },
+      "3": {
+        "type": "diagnostic",
+        "text": "3.14.-0, 03:12:02"
+      },
+      "4": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "ya ever wonder if we really exist or not? like, what if we dont?"
+      },
+      "5": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "what if we're just made up"
+      },
+      "6": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "y'know?"
+      },
+      "7": {
+        "speeds": {
+          "pre": 3000,
+          "tick": 500,
+          "text": 250
+        },
+        "type": "dm",
+        "from": "Lexa",
+        "text": "It's three in the morning."
+      },
+      "8": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "do u tho?"
+      },
+      "9": {
+        "type": "dm",
+        "from": "Lexa",
+        "text": "Yes."
+      },
+      "10": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "existence is weird isn't it"
+      },
+      "11": {
+        "type": "dm",
+        "from": "Lexa",
+        "text": "It sure is."
+      },
+      "12": {
+        "type": "dm",
+        "from": "Lexa",
+        "text": "I'm going back to sleep now."
+      },
+      "13": {
+        "type": "diagnostic",
+        "text": "user [CYAN]Lexa[RESET] is offline."
+      },
+      "14": {
+        "type": "dm",
+        "from": "Xander",
+        "text": ":("
+      },
+      "15": {
+        "type": "dm",
+        "from": "Xander",
+        "text": "buzzkill"
+      },
+      "16": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "diagnostic",
+        "text": "End of archived conversation."
+      },
+      "17": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "animation",
+        "animation": "wipeBox",
+        "settings": {
+          "0": 1,
+          "1": 1,
+          "2": 16,
           "3": 62,
           "4": 2
         }

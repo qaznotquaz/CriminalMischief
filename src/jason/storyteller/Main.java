@@ -17,11 +17,14 @@ import static jason.storyteller.Animations.animate;
 import static jason.storyteller.Script.getSceneLength;
 
 public class Main { //todo: implement triage handling and logical operators for tag system
-    static String date; static ArrayList<String> tags = new ArrayList<>();
+    static String date;
+    static boolean anyOfTags;
+    static ArrayList<String> searchTags = new ArrayList<>();
+    static ArrayList<String> excludeTags = new ArrayList<>();
     static int[] consoleSize;
     static int currentConsoleLine = 1;
-    static int[] chatDefaultSpeeds = new int[]{1000, 20, 1000, 30};
-    static int[] diagnosticDefaultSpeeds = new int[]{5, 10, 0, 0};
+    static int[] chatDefaultSpeeds = new int[]{3000, 20, 2000, 50};
+    static int[] diagnosticDefaultSpeeds = new int[]{1000, 30, 0, 0};
     static int[] quickSpeeds = new int[]{50, 5, 10, 10};
 
     static ArrayList<String[]> config = new ArrayList<>();
@@ -32,9 +35,7 @@ public class Main { //todo: implement triage handling and logical operators for 
     public static void main(String[] args) throws InterruptedException, IOException {
         File cfgFile = new File("config.txt");
         BufferedReader reader = new BufferedReader(new FileReader(cfgFile));
-        reader.lines().forEach(s -> config.add(s.split(": ")));
-
-        config.forEach(s -> cfgCheck(s[0], s[1]));
+        reader.lines().forEach(Main::parseCfgLine);
 
         Map<String, String> myColors = new HashMap<>();
         myColors.put("BRIGHT_RED", BRIGHT_RED);
@@ -52,7 +53,7 @@ public class Main { //todo: implement triage handling and logical operators for 
         }
 
         try {
-            script = new Script(date, tags);
+            script = new Script(date, anyOfTags, searchTags, excludeTags);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,22 +61,39 @@ public class Main { //todo: implement triage handling and logical operators for 
 
         setupConsole();
 
-        for (JSONObject line : script) {
+        for (JSONObject line:script) {
             actLine(line);
         }
     }
 
-    private static void cfgCheck(String option, String choice) {
-        switch (option) {
-            case "date":
-                date = choice;
-                break;
-            case "tags":
-                Collections.addAll(tags, choice.split(", "));
-                break;
-            case "quickMode":
-                quickMode = Boolean.parseBoolean(choice);
-                break;
+    private static void parseCfgLine(String lineRaw){
+        String[] line = lineRaw.split(": ");
+
+        //todo: add error handling
+        if(line.length == 2){
+            switch (line[0]) {
+                case "date":
+                    date = line[1];
+                    break;
+
+                case "any/all":
+                    if(line[1].equals("any")){
+                        anyOfTags = true;
+                    } else if(line[1].equals("all")){
+                        anyOfTags = false;
+                    }
+                    break;
+                case "tags":
+                    Collections.addAll(searchTags, line[1].split(", "));
+                    break;
+                case "exclude":
+                    Collections.addAll(excludeTags, line[1].split(", "));
+                    break;
+
+                case "quickMode":
+                    quickMode = Boolean.parseBoolean(line[1]);
+                    break;
+            }
         }
     }
 

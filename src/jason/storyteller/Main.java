@@ -14,13 +14,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static jason.storyteller.ANSI.*;
 import static jason.storyteller.Animations.animate;
-import static jason.storyteller.Script.getSceneLength;
 
 public class Main { //todo: implement triage handling and logical operators for tag system
     static String date;
-    static boolean anyOfTags;
-    static ArrayList<String> searchTags = new ArrayList<>();
-    static ArrayList<String> excludeTags = new ArrayList<>();
+    static SnippetFilter filter = new SnippetFilter();
     static int[] consoleSize;
     static int currentConsoleLine = 1;
     static int[] chatDefaultSpeeds = new int[]{3000, 20, 2000, 50};
@@ -28,9 +25,10 @@ public class Main { //todo: implement triage handling and logical operators for 
     static int[] quickSpeeds = new int[]{50, 5, 10, 10};
 
     static ArrayList<String[]> config = new ArrayList<>();
-    static Script script;
+    static DateRecord dateRecord;
 
     static boolean quickMode = false;
+    private static DateRecord.Snippet selectedSnippet;
 
     public static void main(String[] args) throws InterruptedException, IOException {
         File cfgFile = new File("config.txt");
@@ -45,6 +43,8 @@ public class Main { //todo: implement triage handling and logical operators for 
         myColors.put("RED", RED);
         myColors.put("UNDERLINE", UNDERLINE);
         myColors.put("INVERT", INVERT);
+        myColors.put("BRIGHT_WHITE", BRIGHT_WHITE);
+        myColors.put("WHITE", WHITE);
         ANSI.setDynamicColor(myColors);
 
         if(quickMode){
@@ -53,15 +53,18 @@ public class Main { //todo: implement triage handling and logical operators for 
         }
 
         try {
-            script = new Script(date, anyOfTags, searchTags, excludeTags);
+            dateRecord = new DateRecord(date, filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        consoleSize = new int[]{62, getSceneLength()};
+
+        selectedSnippet = dateRecord.snippets.get(0);
+
+        consoleSize = new int[]{62, selectedSnippet.getSnippetLength()};
 
         setupConsole();
 
-        for (JSONObject line:script) {
+        for (JSONObject line:dateRecord.snippets.get(0)) {
             actLine(line);
         }
     }
@@ -78,16 +81,16 @@ public class Main { //todo: implement triage handling and logical operators for 
 
                 case "any/all":
                     if(line[1].equals("any")){
-                        anyOfTags = true;
+                        filter.setAnyOrAll(true);
                     } else if(line[1].equals("all")){
-                        anyOfTags = false;
+                        filter.setAnyOrAll(false);
                     }
                     break;
                 case "tags":
-                    Collections.addAll(searchTags, line[1].split(", "));
+                    filter.setIncludedTags(new ArrayList<>(Arrays.asList(line[1].split(", "))));
                     break;
                 case "exclude":
-                    Collections.addAll(excludeTags, line[1].split(", "));
+                    filter.setExcludedTags(new ArrayList<>(Arrays.asList(line[1].split(", "))));
                     break;
 
                 case "quickMode":
@@ -98,23 +101,24 @@ public class Main { //todo: implement triage handling and logical operators for 
     }
 
     public static void actLine(JSONObject line) throws InterruptedException {
-        Script.LineType type = line.getEnum(Script.LineType.class, "type");
+        //DateRecord.LineType type = line.getEnum(DateRecord.LineType.class, "type");
+        String type = line.getString("type");
         int[] speeds;
         JSONObject jsonSpeeds = line.optJSONObject("speeds");
 
         switch (type) {
-            case dm:
+            case "dm":
                 speeds = adjustSpeeds(jsonSpeeds, chatDefaultSpeeds);
                 Thread.sleep(speeds[0]);
-                displayDm(Objects.requireNonNull(Script.getActor(line.getString("from"))),
+                displayDm(Objects.requireNonNull(selectedSnippet.getActor(line.getString("from"))),
                         line, speeds);
                 break;
-            case diagnostic:
+            case "diagnostic":
                 speeds = adjustSpeeds(jsonSpeeds, diagnosticDefaultSpeeds);
                 Thread.sleep(speeds[0]);
                 writeGradually(otherHighlight(line.getString("text"), RESET), speeds, false);
                 break;
-            case animation:
+            case "animation":
                 speeds = adjustSpeeds(jsonSpeeds, quickSpeeds);
                 Thread.sleep(speeds[0]);
                 animate(line.getString("animation"), line.getJSONObject("settings"));
@@ -165,7 +169,7 @@ public class Main { //todo: implement triage handling and logical operators for 
     }
 
     //todo: label
-    public static void displayDm(Script.MiniActor actor, JSONObject line, int[] speeds) throws InterruptedException {
+    public static void displayDm(DateRecord.Snippet.MiniActor actor, JSONObject line, int[] speeds) throws InterruptedException {
         String text = line.getString("text");
         String toPrint;
 

@@ -35,11 +35,11 @@
       "header": {
         "actors": {
         "Lexa": {
-          "side": "Left",
+          "side": "Right",
           "color": "CYAN"
         },
         "Xander": {
-          "side": "Right",
+          "side": "Left",
           "color": "BRIGHT_RED"
         }
       },
@@ -52,11 +52,11 @@
       },
       "2": {
         "type": "diagnostic",
-        "text": "Original conversation began:"
+        "text": "Original conversation began [UNDERLINE]3.14.-0[RESET], [UNDERLINE]22:05:58[RESET]"
       },
       "3": {
         "type": "diagnostic",
-        "text": "3.14.-0, 22:05:58"
+        "text": ""
       },
       "4": {
         "type": "dm",
@@ -71,8 +71,7 @@
       "6": {
         "type": "dm",
         "from": "Xander",
-        "text": "have you [UNDERLINE]no chill?[RESET]",
-        "otherHighlights": "[UNDERLINE][RESET]"
+        "text": "have you no chill?"
       },
       "7": {
         "type": "dm",
@@ -173,11 +172,11 @@
       "header": {
         "actors": {
           "Lexa": {
-            "side": "Right",
+            "side": "Left",
             "color": "CYAN"
           },
           "Xander": {
-            "side": "Left",
+            "side": "Right",
             "color": "BRIGHT_RED"
           }
         },
@@ -190,11 +189,11 @@
       },
       "2": {
         "type": "diagnostic",
-        "text": "Original conversation began:"
+        "text": "Original conversation began: 3.14.-0, 03:12:02"
       },
       "3": {
         "type": "diagnostic",
-        "text": "3.14.-0, 03:12:02"
+        "text": ""
       },
       "4": {
         "type": "dm",

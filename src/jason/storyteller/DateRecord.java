@@ -13,7 +13,7 @@ public class DateRecord {
     private JSONObject dateRecordJson;
     private final String scene = "0";
 
-    ArrayList<Snippet> snippets = new ArrayList<>();
+    private final ArrayList<Snippet> snippets = new ArrayList<>();
 
     public DateRecord(String date, SnippetFilter filter) {
         InputStream inputStream;
@@ -44,6 +44,14 @@ public class DateRecord {
                 snippets.add(new Snippet(scene));
             }
         }
+    }
+
+    public int countSnippets(){
+        return snippets.size();
+    }
+
+    public Snippet getSnippet(int index){
+        return snippets.get(index);
     }
 
     public boolean checkSnippetTags(SnippetFilter filter, ArrayList<String> sceneTags) {

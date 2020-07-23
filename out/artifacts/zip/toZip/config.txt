@@ -3,8 +3,9 @@ date: 3.14.-0
 
 TAGS
 any/all: all
-tags: bickering
+tags: filler, bickering
 exclude: none
 
-OTHER
+SETTINGS
 quick mode: false
+verbose: true

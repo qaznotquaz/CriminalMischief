@@ -24,6 +24,10 @@ public class SnippetFilter {
         return !anyOrAll;
     }
 
+    public String getAnyAll(){
+        return anyOrAll ? "any" : "all";
+    }
+
     public void setAnyOrAll(boolean anyOrAll) {
         this.anyOrAll = anyOrAll;
     }

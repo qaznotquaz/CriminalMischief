@@ -158,13 +158,9 @@
           "pre": 3000
         },
         "type": "animation",
-        "animation": "wipeBox",
+        "animation": "clearScreen",
         "settings": {
-          "0": 1,
-          "1": 1,
-          "2": 25,
-          "3": 62,
-          "4": 2
+          "0": 1
         }
       }
     },
@@ -180,7 +176,7 @@
             "color": "BRIGHT_RED"
           }
         },
-        "length": 17,
+        "length": 15,
         "tags": "filler, bickering, existential"
       },
       "1": {
@@ -271,13 +267,9 @@
           "pre": 3000
         },
         "type": "animation",
-        "animation": "wipeBox",
+        "animation": "clearScreen",
         "settings": {
-          "0": 1,
-          "1": 1,
-          "2": 16,
-          "3": 62,
-          "4": 2
+          "0": 1
         }
       }
     }

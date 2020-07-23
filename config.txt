@@ -3,8 +3,8 @@ date: 3.14.-0
 
 TAGS
 any/all: all
-tags: existential
+tags: bickering
 exclude: none
 
 OTHER
-quick mode: false
+quick mode: true

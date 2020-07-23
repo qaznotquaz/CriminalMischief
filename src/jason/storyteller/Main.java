@@ -16,6 +16,8 @@ import static jason.storyteller.ANSI.*;
 import static jason.storyteller.Animations.animate;
 
 public class Main { //todo: implement triage handling and logical operators for tag system
+    static final String snippetIntro1 = "Conversation recovered from [BG_WHITE][BLUE]HRMNY[RESET] archives.";
+    static final String snippetIntro2 = "Original conversation began [UNDERLINE]%s[RESET], [UNDERLINE]%s[RESET]";
     static String date;
     static SnippetFilter filter = new SnippetFilter();
     static int[] consoleSize;
@@ -23,11 +25,12 @@ public class Main { //todo: implement triage handling and logical operators for 
     static int[] chatDefaultSpeeds = new int[]{3000, 20, 2000, 50};
     static int[] diagnosticDefaultSpeeds = new int[]{1000, 30, 0, 0};
     static int[] quickSpeeds = new int[]{50, 5, 10, 10};
-
     static ArrayList<String[]> config = new ArrayList<>();
     static DateRecord dateRecord;
-
     static boolean quickMode = false;
+    static boolean verboseMode = false;
+    static int extraHeight = 2;
+
     private static DateRecord.Snippet selectedSnippet;
 
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -37,6 +40,7 @@ public class Main { //todo: implement triage handling and logical operators for 
 
         Map<String, String> myColors = new HashMap<>();
         myColors.put("BRIGHT_RED", BRIGHT_RED);
+        myColors.put("BRIGHT_BLUE", BRIGHT_BLUE);
         myColors.put("CYAN", CYAN);
         myColors.put("BG_WHITE", BG_WHITE);
         myColors.put("BLUE", BLUE);
@@ -47,7 +51,7 @@ public class Main { //todo: implement triage handling and logical operators for 
         myColors.put("WHITE", WHITE);
         ANSI.setDynamicColor(myColors);
 
-        if(quickMode){
+        if (quickMode) {
             chatDefaultSpeeds = Arrays.copyOf(quickSpeeds, 4);
             diagnosticDefaultSpeeds = Arrays.copyOf(quickSpeeds, 4);
         }
@@ -58,31 +62,46 @@ public class Main { //todo: implement triage handling and logical operators for 
             e.printStackTrace();
         }
 
-        selectedSnippet = dateRecord.snippets.get(0);
+        displayHeader();
 
-        consoleSize = new int[]{62, selectedSnippet.getSnippetLength()};
-
-        setupConsole();
-
-        for (JSONObject line:dateRecord.snippets.get(0)) {
+        for (JSONObject line : dateRecord.getSnippet(0)) {
             actLine(line);
         }
     }
 
-    private static void parseCfgLine(String lineRaw){
+    public static void displayHeader() throws IOException, InterruptedException {
+        selectedSnippet = dateRecord.getSnippet(0);
+
+        if (verboseMode)
+            extraHeight += 5;
+
+        consoleSize = new int[]{62, selectedSnippet.getSnippetLength()+extraHeight};
+        setupConsole();
+
+        if (verboseMode) {
+            displayDiag(String.format("Searching for snippets [BRIGHT_BLUE]from[RESET]: [UNDERLINE]%s[RESET].", date));
+            displayDiag(String.format("with [BRIGHT_BLUE]%s[RESET] of these tags: [UNDERLINE]%s[RESET]", filter.getAnyAll(), filter.getIncludedTags()));
+            displayDiag(String.format("with [BRIGHT_RED]none[RESET] of these tags: [UNDERLINE]%s[RESET]", filter.getExcludedTags()));
+        }
+
+        displayDiag(String.format("Found %s snippets. Displaying the first.", dateRecord.countSnippets()), new int[]{3000, diagnosticDefaultSpeeds[1], diagnosticDefaultSpeeds[2], diagnosticDefaultSpeeds[3]});
+        displayDiag("");
+    }
+
+    private static void parseCfgLine(String lineRaw) {
         String[] line = lineRaw.split(": ");
 
         //todo: add error handling
-        if(line.length == 2){
+        if (line.length == 2) {
             switch (line[0]) {
                 case "date":
                     date = line[1];
                     break;
 
                 case "any/all":
-                    if(line[1].equals("any")){
+                    if (line[1].equals("any")) {
                         filter.setAnyOrAll(true);
-                    } else if(line[1].equals("all")){
+                    } else if (line[1].equals("all")) {
                         filter.setAnyOrAll(false);
                     }
                     break;
@@ -93,8 +112,11 @@ public class Main { //todo: implement triage handling and logical operators for 
                     filter.setExcludedTags(new ArrayList<>(Arrays.asList(line[1].split(", "))));
                     break;
 
-                case "quickMode":
+                case "quick mode":
                     quickMode = Boolean.parseBoolean(line[1]);
+                    break;
+                case "verbose":
+                    verboseMode = Boolean.parseBoolean(line[1]);
                     break;
             }
         }
@@ -126,20 +148,20 @@ public class Main { //todo: implement triage handling and logical operators for 
         }
     }
 
-    public static int[] adjustSpeeds(JSONObject jsonSpeeds, int[] defaultSpeeds){
+    public static int[] adjustSpeeds(JSONObject jsonSpeeds, int[] defaultSpeeds) {
         int[] speeds = Arrays.copyOf(defaultSpeeds, 4);
 
-        if(!quickMode && jsonSpeeds != null){
-            if(jsonSpeeds.has("pre")){
+        if (!quickMode && jsonSpeeds != null) {
+            if (jsonSpeeds.has("pre")) {
                 speeds[0] = jsonSpeeds.getInt("pre");
             }
-            if(jsonSpeeds.has("name")){
+            if (jsonSpeeds.has("name")) {
                 speeds[1] = jsonSpeeds.getInt("name");
             }
-            if(jsonSpeeds.has("tick")){
+            if (jsonSpeeds.has("tick")) {
                 speeds[2] = jsonSpeeds.getInt("tick");
             }
-            if(jsonSpeeds.has("text")){
+            if (jsonSpeeds.has("text")) {
                 speeds[3] = jsonSpeeds.getInt("text");
             }
         }
@@ -196,9 +218,19 @@ public class Main { //todo: implement triage handling and logical operators for 
         writeGradually(toPrint, speeds, actor.isBackwards());
     }
 
+    public static void displayDiag(String line) throws InterruptedException {
+        Thread.sleep(diagnosticDefaultSpeeds[0]);
+        writeGradually(otherHighlight(line, RESET), diagnosticDefaultSpeeds, false);
+    }
+
+    public static void displayDiag(String line, int[] speeds) throws InterruptedException {
+        Thread.sleep(speeds[0]);
+        writeGradually(otherHighlight(line, RESET), speeds, false);
+    }
+
     @SuppressWarnings("BusyWait")
     public static void writeGradually(String line, int[] speeds, boolean backwards) throws InterruptedException {
-        if(backwards){
+        if (backwards) {
             writeGraduallyBackwards(line, speeds);
         } else {
             boolean escaped = false;
@@ -269,15 +301,15 @@ public class Main { //todo: implement triage handling and logical operators for 
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
 
-            if (c=='\n'){
-                if(currentNewline == totalNewlines){
-                    while(col != linebreakCol){
+            if (c == '\n') {
+                if (currentNewline == totalNewlines) {
+                    while (col != linebreakCol) {
                         System.out.printf(" %s", CUP(printingLine, col));
                         col++;
                     }
                     totalNewlines++;
                     currentConsoleLine++;
-                    printingLine = printingLine+totalNewlines;
+                    printingLine = printingLine + totalNewlines;
                     currentNewline = 0;
                     i = arrow;
                 } else {
@@ -285,7 +317,7 @@ public class Main { //todo: implement triage handling and logical operators for 
                     currentNewline++;
                 }
 
-                if(printingLine == origLine){
+                if (printingLine == origLine) {
                     speed = speeds[3];
                 } else {
                     speed = 0;
@@ -303,26 +335,26 @@ public class Main { //todo: implement triage handling and logical operators for 
                 escaped = true;
             }
 
-            if (!escaped && !Character.isSpaceChar(c)){
+            if (!escaped && !Character.isSpaceChar(c)) {
                 Thread.sleep(speed);
             }
 
-            if(!escaped){
+            if (!escaped) {
                 col--;
             }
 
-            if (c == '<'){
+            if (c == '<') {
                 Thread.sleep(speeds[2]);
                 speed = speeds[3];
                 linebreakCol = col - 1;
-                arrow = i+1;
+                arrow = i + 1;
             }
 
-            if(!escaped){
+            if (!escaped) {
                 System.out.print(CUB(2));
             }
 
-            if (c == 'm'){
+            if (c == 'm') {
                 escaped = false;
             }
         }
@@ -331,7 +363,7 @@ public class Main { //todo: implement triage handling and logical operators for 
         currentConsoleLine++;
     }
 
-    public static String processBackwardLinebreaks(String text){
+    public static String processBackwardLinebreaks(String text) {
         StringBuilder line = new StringBuilder(text).reverse();
         boolean possiblyEscaped = false;
         int charsEscaped = 0;
@@ -340,7 +372,7 @@ public class Main { //todo: implement triage handling and logical operators for 
         int linebreakCol = col;
 
         for (int i = 0; i < line.length(); i++) {
-            if (col == 1){
+            if (col == 1) {
                 i = lastSpace;
                 col = linebreakCol;
                 line.setCharAt(i, '\n');
@@ -353,19 +385,19 @@ public class Main { //todo: implement triage handling and logical operators for 
                 charsEscaped = 0;
             }
 
-            if (Character.isSpaceChar(c)){
+            if (Character.isSpaceChar(c)) {
                 lastSpace = i;
             }
 
             col--;
 
-            if(possiblyEscaped){
+            if (possiblyEscaped) {
                 charsEscaped++;
             }
 
-            if (c == '\u001B'){
+            if (c == '\u001B') {
                 possiblyEscaped = false;
-                col = col+charsEscaped;
+                col = col + charsEscaped;
                 charsEscaped = 0;
             }
         }

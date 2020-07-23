@@ -6,14 +6,15 @@ public class Animations {
     public static void animate(String name, JSONObject settings) throws InterruptedException {
         switch (name){
             case "wipeBox":
-                wipeBox(settings.getInt("0"),
-                        settings.getInt("1"),
-                        settings.getInt("2"),
-                        settings.getInt("3"),
+                wipeBox(settings.getInt("1"), settings.getInt("0"),
+                        settings.getInt("3"), settings.getInt("2"),
                         settings.getInt("4"));
                 break;
             case "streak":
                 streak();
+                break;
+            case "clearScreen":
+                wipeBox(1, 1, Main.consoleSize[0], Main.consoleSize[1], settings.getInt("0"));
                 break;
         }
     }
@@ -26,7 +27,7 @@ public class Animations {
         }
     }
 
-    public static void wipeBox(int rowTop, int colLeft, int rowBot, int colRight, int speed) throws InterruptedException {
+    public static void wipeBox(int colLeft, int rowTop, int colRight, int rowBot, int speed) throws InterruptedException {
         System.out.printf("%s", ANSI.BG_WHITE);
         for (int col = colLeft; col <= colRight; col++) {
             for (int row = rowTop; row <= rowBot; row++) {

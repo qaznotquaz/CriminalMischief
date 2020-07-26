@@ -61,7 +61,7 @@
       "4": {
         "type": "dm",
         "from": "Lexa",
-        "text": "My name is Inigo Montoya. You killed my father. Prepare to die."
+        "text": "My name is [UNDERLINE]Inigo Montoya[RESET]. You killed my father. Prepare to die."
       },
       "5": {
         "type": "dm",
@@ -71,7 +71,7 @@
       "6": {
         "type": "dm",
         "from": "Xander",
-        "text": "have you no chill?"
+        "text": "have you [RESET]no[UNDERLINE] chill?"
       },
       "7": {
         "type": "dm",
@@ -139,7 +139,7 @@
       "17": {
         "type": "dm",
         "from": "Xander",
-        "text": "no i dont think i  will! im going to ramble until this line runs off the edge of the window. ramble ramble ramble ramble ramble ramble ramble ramble ramble ramble raaaamble ramble ramble"
+        "text": "no i dont think i will! im going to ramble until this line runs off the edge of the window. ramble ramble ramble ramble ramble ramble ramble ramble ramble ramble raaaamble ramble ramble"
       },
       "18": {
         "type": "dm",

@@ -1,6 +1,5 @@
 package jason.storyteller;
 
-import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -111,14 +110,14 @@ public class DateRecord {
              */
             private String color;
             /**
-             * The side of the screen the actor's messages show up on. {@code false} is left, {@code true} is right.
+             * The side of the screen the actor's messages show up on. {@code true} is left, {@code false} is right.
              */
-            private boolean backwards;
+            private boolean forwards;
 
             public MiniActor(String name, JSONObject json) {
                 this.name = name;
                 color = ANSI.dynamicColor.get(json.getString("color"));
-                backwards = json.getString("side").equals("Left");
+                forwards = json.getString("side").equals("Right");
             }
 
             public String getName() {
@@ -137,12 +136,12 @@ public class DateRecord {
                 this.color = color;
             }
 
-            public boolean isBackwards() {
-                return backwards;
+            public boolean isForwards() {
+                return forwards;
             }
 
-            public void setBackwards(boolean backwards) {
-                this.backwards = backwards;
+            public void setForwards(boolean forwards) {
+                this.forwards = forwards;
             }
         }
 

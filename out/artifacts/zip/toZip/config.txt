@@ -7,5 +7,5 @@ tags: filler, bickering
 exclude: none
 
 SETTINGS
-quick mode: false
-verbose: true
+quick mode: true
+verbose: false

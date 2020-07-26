@@ -14,7 +14,7 @@ public class Animations {
                 streak();
                 break;
             case "clearScreen":
-                wipeBox(1, 1, Main.consoleSize[0], Main.consoleSize[1], settings.getInt("0"));
+                wipeBox(1, 1, Driver.consoleSize[0], Driver.consoleSize[1], settings.getInt("0"));
                 break;
         }
     }

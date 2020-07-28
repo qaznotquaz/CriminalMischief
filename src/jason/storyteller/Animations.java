@@ -1,5 +1,6 @@
 package jason.storyteller;
 
+import jason.terminal.ANSI;
 import org.json.JSONObject;
 
 public class Animations {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class SnippetFilter {
     private boolean anyOrAll;
-    private ArrayList<String> includedTags;
-    private ArrayList<String> excludedTags;
+    private ArrayList<String> includedTags = new ArrayList<>();
+    private ArrayList<String> excludedTags = new ArrayList<>();
 
     public SnippetFilter(){
     }
@@ -37,7 +37,9 @@ public class SnippetFilter {
     }
 
     public void setIncludedTags(ArrayList<String> includedTags) {
-        this.includedTags = includedTags;
+        for (String tag:includedTags) {
+            this.includedTags.add(tag.trim());
+        }
     }
 
     public ArrayList<String> getExcludedTags() {
@@ -45,6 +47,12 @@ public class SnippetFilter {
     }
 
     public void setExcludedTags(ArrayList<String> excludedTags) {
-        this.excludedTags = excludedTags;
+        for (String tag:excludedTags) {
+            this.excludedTags.add(tag.trim());
+        }
+    }
+
+    public boolean hasExcludedTags() {
+        return excludedTags.size() > 0;
     }
 }

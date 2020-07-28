@@ -1,0 +1,319 @@
+{
+  "header": {
+    "date": "4.4.-0"
+  },
+  "scenes": {
+    "none": {
+      "header": {
+        "length": 3,
+        "tags": "none"
+      },
+      "1": {
+        "type": "diagnostic",
+        "text": "Archive from 4.4.-0"
+      },
+      "2": {
+        "type": "diagnostic",
+        "text": "No snippets match your search."
+      },
+      "3": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "animation",
+        "animation": "clearScreen",
+        "settings": {
+          "0": 1
+        }
+      }
+    },
+    "0": {
+      "header": {
+        "actors": {
+        "AlexL": {
+          "side": "Left",
+          "color": "CYAN"
+        },
+        "alexL": {
+          "side": "Right",
+          "color": "BRIGHT_RED"
+        }
+      },
+        "length": 39,
+        "timestamp": "12:45:45",
+        "tags": "first, beginning, bickering, mocking, overthinking, existential, hindsight, snemail, fire, smoke, food, meal, lunch, alex, alexander, alexa, xander, lexa, l, x, alexl, twins"
+      },
+      "1": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "first!"
+      },
+      "2": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "You sure are."
+      },
+      "3": {
+        "type": "dm",
+        "from": "alexL",
+        "text": ":3"
+      },
+      "4": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "very clever username"
+      },
+      "5": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Oh? It doesn't appear to be that case that you put in any more effort than I did."
+      },
+      "6": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "yeah ok im gonna change it soon though"
+      },
+      "7": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "i just dont have any good ideas rn"
+      },
+      "8": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "I suppose I probably will as well. This is all about presentation, right?"
+      },
+      "9": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "i- it's about talking"
+      },
+      "10": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "it's"
+      },
+      "11": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "this is literally for talking to people, what?"
+      },
+      "12": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "It's one of many crucial tools for those who wish to curate a particular virtual image for themselves, though. Tell me I'm wrong."
+      },
+      "13": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "i mean sure dude, if that's what floats your boat"
+      },
+      "14": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "real weird way to go about it but sure"
+      },
+      "15": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "im just saying it's nicer than snemail"
+      },
+      "16": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Truly."
+      },
+      "17": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "SnEmail was so terribly slow."
+      },
+      "18": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "...Do you have any clue why we ever even used it?"
+      },
+      "19": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "i thought itd be funny and then neither of us cared to switch cus \"it worked well enough\""
+      },
+      "20": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Phenomenal."
+      },
+      "21": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "i know right"
+      },
+      "22": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "ya ever look back on decisions like that and wonder, like."
+      },
+      "23": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "why?"
+      },
+      "24": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "why did i do that?"
+      },
+      "25": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Yeah, hindsight's 20/20 isn't it?"
+      },
+      "26": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "sure is"
+      },
+      "27": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "anyways im gonna make lunch"
+      },
+      "28": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Do not make lunch."
+      },
+      "29": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "X? Get out of the kitchen."
+      },
+      "30": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Hello?"
+      },
+      "31": {
+        "type": "dm",
+        "from": "AlexL",
+        "text": "Wait. I smell smoke."
+      },
+      "32": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "diagnostic",
+        "text": "End of archived conversation."
+      },
+      "33": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "animation",
+        "animation": "clearScreen",
+        "settings": {
+          "0": 1
+        }
+      }
+    },
+    "1": {
+      "header": {
+        "actors": {
+          "ChillLex": {
+            "side": "Left",
+            "color": "CYAN"
+          },
+          "alexL": {
+            "side": "Right",
+            "color": "BRIGHT_RED"
+          }
+        },
+        "length": 18,
+        "timestamp": "13:12:59",
+        "tags": "first, bickering, mocking, bragging, joking, cool, ice pun, alex, alexander, alexa, xander, lexa, l, x, alexl, chilllex, twins"
+      },
+      "1": {
+        "type": "dm",
+        "from": "ChillLex",
+        "text": "First."
+      },
+      "2": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "first to what"
+      },
+      "3": {
+        "type": "dm",
+        "from": "ChillLex",
+        "text": "To have a [RESET]cooler[BRIGHT_BLUE] name than you."
+      },
+      "4": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "pppffff congrats  sis"
+      },
+      "5": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "love it"
+      },
+      "6": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "definitely isn't gonna make me laugh every time i read it"
+      },
+      "7": {
+        "type": "dm",
+        "from": "ChillLex",
+        "text": "Rude."
+      },
+      "8": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "look fam i cannot take you seriously with a name like that"
+      },
+      "9": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "im trying. look me in the eyes, i am trying so hard"
+      },
+      "10": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "im trying to take you seriously but i absolutely cannot stop laughing"
+      },
+      "11": {
+        "type": "dm",
+        "from": "ChillLex",
+        "text": "Well we'll see what you come up with, then."
+      },
+      "12": {
+        "type": "dm",
+        "from": "ChillLex",
+        "text": "I will spare no mockery."
+      },
+      "13": {
+        "type": "dm",
+        "from": "alexL",
+        "text": "yeah you better not"
+      },
+      "14": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "diagnostic",
+        "text": "End of archived conversation."
+      },
+      "15": {
+        "speeds":{
+          "pre": 3000
+        },
+        "type": "animation",
+        "animation": "clearScreen",
+        "settings": {
+          "0": 1
+        }
+      }
+    }
+  }
+}

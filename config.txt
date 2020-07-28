@@ -1,10 +1,11 @@
 DATE
-date: 3.14.-0
+date: 4.4.-0
 
 TAGS
 any/all: all
-tags: bickering
-exclude: none
+tags: chilllex
+exclude:
 
-OTHER
-quick mode: true
+SETTINGS
+quick mode: false
+verbose: true

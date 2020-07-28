@@ -1,11 +1,11 @@
 DATE
 date: 4.4.-0
 
-TAGS
+FILTERING
 any/all: all
 tags: chilllex
 exclude:
 
-SETTINGS
+OTHER SETTINGS
 quick mode: false
 verbose: true

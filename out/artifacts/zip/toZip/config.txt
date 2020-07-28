@@ -1,11 +1,11 @@
 DATE
-date: 3.14.-0
+date: 4.4.-0
 
 TAGS
 any/all: all
-tags: filler, bickering
-exclude: none
+tags: chilllex
+exclude:
 
 SETTINGS
-quick mode: true
-verbose: false
+quick mode: false
+verbose: true
